@@ -1,0 +1,43 @@
+version: '2'
+services:
+    # consumer暴露80端口
+    consumer:
+      container_name: consumer
+      image: dubbo-mesh
+      build:
+        context: . # Dockerfile所在的目录
+        dockerfile: Dockerfile  # dockfile文件
+      ports:
+        - "8087:80"
+      command: consumer
+      links:
+        - etcd
+
+    # provider-small容器
+    provider-small:
+      container_name: provider-small
+      image: dubbo-mesh # 复用dubbo-mes镜像
+      command: provider-small
+      links:
+        - etcd
+
+    # provider-medium容器
+    provider-medium:
+      container_name: provider-medium
+      image: dubbo-mesh # 复用dubbo-mes镜像
+      command: provider-medium
+      links:
+        - etcd
+
+    # provider-large容器
+    provider-large:
+      container_name: provider-large
+      image: dubbo-mesh # 复用dubbo-mes镜像
+      command: provider-large
+      links:
+          - etcd
+
+    # etcd容器服务
+    etcd:
+      container_name: etcd
+      image: registry.cn-hangzhou.aliyuncs.com/aliware2018/alpine-etcd
